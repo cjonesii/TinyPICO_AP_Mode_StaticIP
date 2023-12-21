@@ -1,0 +1,36 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESP32 Web Interface</title>
+</head>
+<body>
+    <form id="myForm" method="post">
+        SSID: <input type="text" name="ssid" id="ssid"><br>
+        Password: <input type="password" name="password" id="password"><br>
+        <button type="button" onclick="saveData()">Save</button>
+    </form>
+
+    <script>
+        function saveData() {
+            console.log("Save button clicked");
+            var form = document.getElementById("myForm");
+            var data = {
+                ssid: form.elements.ssid.value,
+                password: form.elements.password.value
+            };
+
+            console.log("Data to be sent:", data);
+            fetch('/save', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+        }
+    </script>
+</body>
+</html>
