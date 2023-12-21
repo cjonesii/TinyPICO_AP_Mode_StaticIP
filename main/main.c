@@ -19,6 +19,7 @@
 #include <esp_http_server.h> // WebServer
 #include "esp_netif.h" // For setting static IP
 #include "freertos/event_groups.h" // Event groups
+#include "cJSON.h" // For parsing the JSON data
 
 #include "lwip/err.h"
 #include "lwip/sys.h"
@@ -171,10 +172,24 @@ static esp_err_t save_handler(httpd_req_t *req)
             return ESP_FAIL;
         }
         remaining -= ret;
+    }
+
+        cJSON *root = cJSON_Parse(buf);
+        if (root == NULL) {
+            ESP_LOGE(TAG, "Failed to parse JSON data");
+            httpd_resp_send_500(req);
+            return ESP_FAIL;
+        }
+
+        const char *ssid = cJSON_GetObjectItem(root, "ssid")->valuestring;
+        const char *password = cJSON_GetObjectItem(root, "password")->valuestring;
 
         // Print the received data
-        ESP_LOGI(TAG, "Received data: %.*s", ret, buf);
-    }
+        // ESP_LOGI(TAG, "Received data: %.*s", ret, buf);
+        ESP_LOGI(TAG, "SSID: %s", ssid);
+        ESP_LOGI(TAG, "Password: %s", password);
+
+        cJSON_Delete(root);
 
     // Send a response to the client
     const char resp_str[] = "Data received successfully";
