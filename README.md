@@ -1,35 +1,21 @@
-| Supported Targets | ESP32 | ESP32-C2 | ESP32-C3 | ESP32-C6 | ESP32-H2 | ESP32-S2 | ESP32-S3 |
-| ----------------- | ----- | -------- | -------- | -------- | -------- | -------- | -------- |
+| Supported Targets | Tiny PICO |
+| ----------------- | --------- |
 
-# _Sample project_
+# _Tiny PICO AP-Mode in Static IP_
 
-(See the README.md file in the upper level 'examples' directory for more information about examples.)
+Develop compilable code for ESP32 using ESP-IDF C.
+The preference is for this to be done to use VS Code with the Espressif extension.
 
-This is the simplest buildable example. The example is used by command `idf.py create-project`
-that copies the project to user specified path and set it's name. For more information follow the [docs page](https://docs.espressif.com/projects/esp-idf/en/latest/api-guides/build-system.html#start-a-new-project)
+Need to be able to interact with the ESP32 via the web interface.
 
 
+Web UI needs to have:
+• 2 input fields, for example credentials for home WiFi (SSID and password), First/Last name, any two fields;
+• Button (Save/Send)
 
-## How to use example
-We encourage the users to use the example as a template for the new projects.
-A recommended way is to follow the instructions on a [docs page](https://docs.espressif.com/projects/esp-idf/en/latest/api-guides/build-system.html#start-a-new-project).
+Visual aspects of the UI are of no importance. IP address of ESP32 needs to be static for the AP mode (192.168.0.1). 
+Sending of the input field values needs to be done using POST with the JSON format.
 
-## Example folder contents
-
-The project **sample_project** contains one source file in C language [main.c](main/main.c). The file is located in folder [main](main).
-
-ESP-IDF projects are built using CMake. The project build configuration is contained in `CMakeLists.txt`
-files that provide set of directives and instructions describing the project's source files and targets
-(executable, library, or both). 
-
-Below is short explanation of remaining files in the project folder.
-
-```
-├── CMakeLists.txt
-├── main
-│   ├── CMakeLists.txt
-│   └── main.c
-└── README.md                  This is the file you are currently reading
-```
-Additionally, the sample project contains Makefile and component.mk files, used for the legacy Make based build system. 
-They are not used or needed when building with CMake and idf.py.
+As a result:
+- Need a server, which is available when connecting to the access point of the ESP32, using the static IP address.
+- When clicked on the button need to send the POST request with the values of the field (SSID, password) in JSON format and have them printed in the terminal.
